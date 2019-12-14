@@ -1,0 +1,25 @@
+@Override
+  public void insert(CustomProcess newObject) {
+    if (size >= INITIAL_CAPACITY) {
+      this.data = new CustomProcess[INITIAL_CAPACITY*2];
+    }
+    data[size] = newObject;
+    int index = size;
+    minHeapPercolateUp(index);
+    size++;
+ 
+  }
+
+  private void minHeapPercolateUp(int index) {
+    while (index > 0) {
+      int parent = (int) Math.floor((index - 1) / 2);
+      int compareResult = data[index].compareTo(data[parent]);
+      if (compareResult >= 0) {
+        System.out.println("order heapified");
+        break;
+      } else {
+        swap(index, parent);
+        index = parent;
+      }
+    }
+  }

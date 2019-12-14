@@ -1,0 +1,104 @@
+/////////////////////////////////////////////////////////////////////
+Here are 5 methods that are used to remove a camper from the BST
+-containsHelper
+-contains
+-remove
+-removeHelper
+-minValue
+
+**make sure you implement all method inside CamperBST class**
+/////////////////////////////////////////////////////////////////////
+
+
+ private  static boolean containsHelper(Camper item, CampTreeNode node) throws NoSuchElementException  {
+    if (item == null) {
+      throw new NoSuchElementException();
+    }
+    // Recursive algorithm
+    if (node == null) // reach a leaf or binary search tree empty
+      return false; // unsuccessful search
+    if (item.compareTo(node.getData()) == 0)
+      // successful search
+      return true;
+    if (item.compareTo(node.getData()) < 0) {
+      return containsHelper(item, node.getLeftNode()); // recur on the left child (left sub-tree)
+    }
+    return containsHelper(item, node.getRightNode()); // recur on the right child (right sub-tree)
+  }
+
+  private boolean contains(Camper camper) {
+    try {
+      if (containsHelper(camper, root) == false) {
+        throw new NoSuchElementException();
+      }
+    }
+    catch (NoSuchElementException e) {
+      throw e;
+    }
+   return containsHelper(camper, root);
+  }
+
+ public void delete(Camper key) throws NoSuchElementException {
+    try {
+      if (contains(key) == false) {
+        throw new NoSuchElementException();
+      }
+    }
+    catch (NullPointerException e) {
+      throw e;
+    }
+    root = deleteHelp(root, key);
+  }
+
+  /**
+   * Recursive helper method to delete.
+   * 
+   * @param current, The "root" of the subtree we are deleting from, ie the node we are currently
+   *                 at.
+   * @param key,     the camper to be deleted from the tree
+   * @return the root of the modified subtree we deleted from
+   * @throws NoSuchElementException if the camper is not in the tree
+   */
+  private CampTreeNode deleteHelp(CampTreeNode current, Camper key) throws NoSuchElementException {
+    if (contains(key) == false) {
+      throw new NoSuchElementException();
+    }
+    
+    if (current == null) { // base case
+      return current;
+    }
+    if (key.compareTo(current.getData()) < 0) {
+      current.setLeftNode(deleteHelp(current.getLeftNode(), key));
+    } else if (key.compareTo(current.getData()) > 0) {
+      current.setRightNode(deleteHelp(current.getRightNode(), key));
+    } else { //
+      if (current.getLeftNode() == null) {
+        CampTreeNode temp = current.getRightNode();
+        size--;
+        return temp;
+      } else if (current.getRightNode() == null) {
+        CampTreeNode temp = current.getLeftNode();
+        size--;
+        return temp;
+      }
+
+      // node with two children, call minValue to find "smallest" camper in right subtree
+      CampTreeNode min = minValue(current.getRightNode()); 
+      
+      // copy the min camper into current 
+      current.setData(min.getData());
+     
+      current.setRightNode(deleteHelp(current.getRightNode(), min.getData()));
+    }
+   return current;
+  }
+
+  private CampTreeNode minValue(CampTreeNode current) {
+    CampTreeNode camper = current;
+    while (current.getLeftNode() != null) {
+      camper = current.getLeftNode();
+      current = current.getRightNode();
+    }
+    return camper;
+
+  } // end method

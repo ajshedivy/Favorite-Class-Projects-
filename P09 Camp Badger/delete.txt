@@ -1,0 +1,43 @@
+ /**
+   * Recursive helper method to delete.
+   * 
+   * @param current, The "root" of the subtree we are deleting from, ie the node we are currently
+   *                 at.
+   * @param key,     the camper to be deleted from the tree
+   * @return the root of the modified subtree we deleted from
+   * @throws NoSuchElementException if the camper is not in the tree
+   */
+  private CampTreeNode deleteHelp(CampTreeNode current, Camper key) { // current = node, key = item
+    
+    if (current.getData() == null) {
+      throw new NoSuchElementException();
+    }
+    if (key.compareTo(current.getData()) < 0 ) {
+      current.setLeftNode(deleteHelp(current.getLeftNode(), key));
+    }
+    else if (key.compareTo(current.getData()) > 0) {
+      current.setRightNode(deleteHelp(current.getRightNode(), key));
+    }
+    else { //
+      if (current.getLeftNode() == null) {
+        return current.getRightNode();
+      }
+      else if (current.getRightNode() == null) {
+        return current.getLeftNode();
+      }
+      current = minValue(current.getRightNode());
+      
+      current.setRightNode(deleteHelp(current.getRightNode(), key));
+    }
+    return current;
+  }
+  
+  private CampTreeNode minValue(CampTreeNode current) {
+    CampTreeNode camper = current;
+    while (current.getLeftNode() != null) {
+      camper = current.getLeftNode();
+      current = current.getRightNode();
+    }
+    return camper;
+    
+  } // end method

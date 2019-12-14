@@ -1,0 +1,11 @@
+E S Adam 10
+E S Bad 10
+E S Cee 13
+E S Dee 9
+E S Eee 8
+E S Fff 13
+E S Gee 9
+S
+T POSTORDER
+T INORDER
+T PREORDER
